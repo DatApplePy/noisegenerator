@@ -73,7 +73,7 @@ public class PerlinNoise {
         return outputStart + y;
     }
 
-    public double noise2D(double x, double y, int wrap) {
+    public double noise2D(double x, double y, int wrapX, int wrapY) {
         int xBase = (int) (Math.floor(x) % permutationSize);
         int yBase = (int) (Math.floor(y) % permutationSize);
         double xRem = x - Math.floor(x);
@@ -84,14 +84,12 @@ public class PerlinNoise {
         Vector2D bottomRight = new Vector2D(xRem - 1, yRem);
         Vector2D bottomLeft = new Vector2D(xRem, yRem);
 
-//        int valueTopRight = permutationTable[permutationTable[xBase+1] + yBase+1];
-//        int valueTopLeft = permutationTable[permutationTable[xBase] + yBase+1];
-//        int valueBottomRight = permutationTable[permutationTable[xBase+1] + yBase];
-//        int valueBottomLeft = permutationTable[permutationTable[xBase] + yBase];
+        int wrappedXBase = wrapX == 0 ? xBase+1 : (xBase+1) % wrapX;
+        int wrappedYBase = wrapY == 0 ? yBase+1 : (yBase+1) % wrapY;
 
-        int valueTopRight = permutationTable[permutationTable[(xBase+1) % wrap] + yBase+1];
-        int valueTopLeft = permutationTable[permutationTable[xBase] + yBase+1];
-        int valueBottomRight = permutationTable[permutationTable[(xBase+1) % wrap] + yBase];
+        int valueTopRight = permutationTable[permutationTable[wrappedXBase] + wrappedYBase];
+        int valueTopLeft = permutationTable[permutationTable[xBase] + wrappedYBase];
+        int valueBottomRight = permutationTable[permutationTable[wrappedXBase] + yBase];
         int valueBottomLeft = permutationTable[permutationTable[xBase] + yBase];
 
         double dotTopRight = topRight.dot(getConstantVector(valueTopRight));
