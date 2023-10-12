@@ -1,5 +1,6 @@
-package hu.szohrfe.noisegenerator;
+package hu.szohrfe.noisegenerator.controller;
 
+import hu.szohrfe.noisegenerator.model.Model;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

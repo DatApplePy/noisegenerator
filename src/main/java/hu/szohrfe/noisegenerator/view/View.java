@@ -1,5 +1,6 @@
-package hu.szohrfe.noisegenerator;
+package hu.szohrfe.noisegenerator.view;
 
+import hu.szohrfe.noisegenerator.observer.Observer;
 import lombok.Setter;
 
 import javax.swing.*;

@@ -1,11 +1,11 @@
-package hu.szohrfe.noisegenerator;
+package hu.szohrfe.noisegenerator.observer;
 
 import java.util.ArrayList;
 
 public abstract class Observable {
     protected final ArrayList<Observer> observers;
 
-    Observable() {
+    public Observable() {
         observers = new ArrayList<>();
     }
 

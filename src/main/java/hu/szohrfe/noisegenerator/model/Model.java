@@ -1,12 +1,13 @@
-package hu.szohrfe.noisegenerator;
+package hu.szohrfe.noisegenerator.model;
 
+import hu.szohrfe.noisegenerator.observer.Observable;
+import hu.szohrfe.noisegenerator.observer.Observer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Getter

@@ -1,4 +1,8 @@
-package hu.szohrfe.noisegenerator;
+package hu.szohrfe.noisegenerator.view;
+
+import hu.szohrfe.noisegenerator.controller.Controller;
+import hu.szohrfe.noisegenerator.model.Model;
+import hu.szohrfe.noisegenerator.model.PerlinNoise;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;

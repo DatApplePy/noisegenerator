@@ -1,4 +1,4 @@
-package hu.szohrfe.noisegenerator;
+package hu.szohrfe.noisegenerator.model;
 
 import java.util.Random;
 
