@@ -9,37 +9,37 @@ public class PerlinNoise {
             }
     }
 
+    private final long seed;
     private final int[] permutationTable;
-    private final int permutationSize;
+    private static final int PERMUTATION_SIZE = 256;
 
-    public PerlinNoise(int permutationSize) {
-        this.permutationSize = permutationSize;
-        this.permutationTable = generatePermutation();
+    public PerlinNoise() {
+        seed = Long.MAX_VALUE;
+        permutationTable = generatePermutation();
+    }
+
+    public PerlinNoise(long seed) {
+        this.seed = seed;
+        permutationTable = generatePermutation();
     }
 
     private int[] shuffle(int[] arr) {
-        Random rng = new Random();
-        for (int i = 0; i < arr.length-1; i++) {
-            int j = rng.nextInt(arr.length - i) + i;
+        Random rng = new Random(seed);
+        for (int i = 0; i < PERMUTATION_SIZE - 1; i++) {
+            int j = rng.nextInt(PERMUTATION_SIZE - i) + i;
             int temp = arr[i];
-            arr[i] = arr[j];
+            arr[i] = arr[PERMUTATION_SIZE + i] = arr[j];
             arr[j] = temp;
         }
         return arr;
     }
 
     private int[] generatePermutation() {
-        int[] permutation = new int[permutationSize];
-        for (int i = 0; i < permutationSize; i++) {
+        int[] permutation = new int[PERMUTATION_SIZE * 2];
+        for (int i = 0; i < PERMUTATION_SIZE; i++) {
             permutation[i] = i;
         }
-        int[] shuffledPermutation = shuffle(permutation);
-        int[] finalPermutation = new int[permutationSize*2];
-        System.arraycopy(shuffledPermutation, 0,
-                finalPermutation, 0, shuffledPermutation.length);
-        System.arraycopy(shuffledPermutation, 0,
-                finalPermutation, shuffledPermutation.length, shuffledPermutation.length);
-        return finalPermutation;
+        return shuffle(permutation);
     }
 
     private Vector2D getConstantVector(int value) {
@@ -74,8 +74,8 @@ public class PerlinNoise {
     }
 
     public double noise2D(double x, double y, int wrapX, int wrapY) {
-        int xBase = (int) (Math.floor(x) % permutationSize);
-        int yBase = (int) (Math.floor(y) % permutationSize);
+        int xBase = (int) (Math.floor(x) % PERMUTATION_SIZE);
+        int yBase = (int) (Math.floor(y) % PERMUTATION_SIZE);
         double xRem = x - Math.floor(x);
         double yRem = y - Math.floor(y);
 
@@ -103,5 +103,9 @@ public class PerlinNoise {
         return lerp(u,
                 lerp(v, dotBottomLeft, dotTopLeft),
                 lerp(v, dotBottomRight, dotTopRight));
+    }
+
+    public long getSeed() {
+        return seed;
     }
 }
