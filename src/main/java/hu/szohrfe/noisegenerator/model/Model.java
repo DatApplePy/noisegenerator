@@ -2,20 +2,22 @@ package hu.szohrfe.noisegenerator.model;
 
 import hu.szohrfe.noisegenerator.observer.Observable;
 import hu.szohrfe.noisegenerator.observer.Observer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import hu.szohrfe.noisegenerator.util.ResettableCountDownLatch;
+import lombok.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Model extends Observable {
 
     private final ThreadPoolExecutor executor;
+    private SwingWorker<Void, Void> worker;
+    private final ResettableCountDownLatch latch;
     private BufferedImage image;
     private PerlinNoise perlin;
     private double frequency;
@@ -25,21 +27,31 @@ public class Model extends Observable {
     private double offset;
     private int octaves;
 
+    public Model(ThreadPoolExecutor executor) {
+        this.executor = executor;
+        this.perlin = new PerlinNoise();
+        this.latch = new ResettableCountDownLatch(4);
+    }
+
     private void generateNoiseImage() {
         executor.submit(() -> {
             generateNoiseImageSegment(0, 0, image.getWidth()/2, image.getHeight()/2);
+            latch.countDown();
             return null;
         });
         executor.submit(() -> {
             generateNoiseImageSegment(image.getWidth()/2, 0, image.getWidth(), image.getHeight()/2);
+            latch.countDown();
             return null;
         });
         executor.submit(() -> {
             generateNoiseImageSegment(0, image.getHeight()/2, image.getWidth()/2, image.getHeight());
+            latch.countDown();
             return null;
         });
         executor.submit(() -> {
             generateNoiseImageSegment(image.getWidth()/2, image.getHeight()/2,image.getWidth(), image.getHeight());
+            latch.countDown();
             return null;
         });
     }
@@ -74,9 +86,27 @@ public class Model extends Observable {
         }
     }
 
+    public void setSeed(long seed) {
+
+    }
+
     public void update() {
-        generateNoiseImage();
-        notifyObservers();
+        worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                generateNoiseImage();
+                latch.await();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                latch.reset();
+                notifyObservers();
+            }
+        };
+
+        worker.execute();
     }
 
     @Override
