@@ -1,6 +1,9 @@
 package hu.szohrfe.noisegenerator.controller;
 
+import hu.szohrfe.noisegenerator.controller.components.BasicJButton;
+import hu.szohrfe.noisegenerator.controller.components.DoubleJSlider;
 import hu.szohrfe.noisegenerator.model.Model;
+import hu.szohrfe.noisegenerator.styles.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +28,16 @@ public class Controller extends JPanel {
 
     private void controllerInit() {
         setPreferredSize(new Dimension(INIT_WIDTH, INIT_HEIGHT));
+        setUI(new MinimalNeonPanelUI());
 
         //Seed Field
         JPanel seedPanel = new JPanel();
         JLabel seedLabel = new JLabel("Seed: ");
         JTextField seedTextField = new JTextField(10);
+
+        seedPanel.setUI(new MinimalNeonPanelUI());
+        seedLabel.setUI(new MinimalNeonLabelUI());
+        seedTextField.setUI(new MinimalNeonTextFieldUI());
 
         seedPanel.add(seedLabel);
         seedPanel.add(seedTextField);
@@ -41,6 +49,9 @@ public class Controller extends JPanel {
         JTextField imageWidthTextField = new JTextField("512", 10);
         JLabel filler = new JLabel("x");
         JTextField imageHeightTextField = new JTextField("512", 10);
+
+        imageSizePanel.setUI(new MinimalNeonPanelUI());
+        imageSizeLabel.setUI(new MinimalNeonLabelUI());
 
         imageSizePanel.add(imageSizeLabel);
         imageSizePanel.add(imageWidthTextField);
@@ -54,6 +65,10 @@ public class Controller extends JPanel {
         DoubleJSlider freqSlider = new DoubleJSlider(1, 1000, 10, 1000);
         JTextField freqTextField = new JTextField(
                 String.valueOf(freqSlider.getScaledValue()), 5);
+
+        freqPanel.setUI(new MinimalNeonPanelUI());
+        freqLabel.setUI(new MinimalNeonLabelUI());
+        freqSlider.setUI(new MinimalNeonSliderUI());
 
         freqSlider.addChangeListener(e -> {
             freqTextField.setText(String.valueOf(freqSlider.getScaledValue()));
@@ -82,6 +97,10 @@ public class Controller extends JPanel {
         JTextField ampTextField = new JTextField(
                 String.valueOf(ampSlider.getScaledValue()), 5);
 
+        ampPanel.setUI(new MinimalNeonPanelUI());
+        ampLabel.setUI(new MinimalNeonLabelUI());
+        ampSlider.setUI(new MinimalNeonSliderUI());
+
         ampSlider.addChangeListener(e -> {
             ampTextField.setText(String.valueOf(ampSlider.getScaledValue()));
         });
@@ -108,6 +127,10 @@ public class Controller extends JPanel {
         DoubleJSlider thresholdMinSlider = new DoubleJSlider(-2000, 0, -1000, 1000);
         JTextField thresholdMinTextField = new JTextField(
                 String.valueOf(thresholdMinSlider.getScaledValue()), 5);
+
+        thresholdMinPanel.setUI(new MinimalNeonPanelUI());
+        thresholdMinLabel.setUI(new MinimalNeonLabelUI());
+        thresholdMinSlider.setUI(new MinimalNeonSliderUI());
 
         thresholdMinSlider.addChangeListener(e -> {
             thresholdMinTextField.setText(String.valueOf(thresholdMinSlider.getScaledValue()));
@@ -136,6 +159,10 @@ public class Controller extends JPanel {
         JTextField thresholdMaxTextField = new JTextField(
                 String.valueOf(thresholdMaxSlider.getScaledValue()), 5);
 
+        thresholdMaxPanel.setUI(new MinimalNeonPanelUI());
+        thresholdMaxLabel.setUI(new MinimalNeonLabelUI());
+        thresholdMaxSlider.setUI(new MinimalNeonSliderUI());
+
         thresholdMaxSlider.addChangeListener(e -> {
             thresholdMaxTextField.setText(String.valueOf(thresholdMaxSlider.getScaledValue()));
         });
@@ -163,6 +190,10 @@ public class Controller extends JPanel {
         JTextField offsetTextField = new JTextField(
                 String.valueOf(offsetSlider.getScaledValue()), 5);
 
+        offsetPanel.setUI(new MinimalNeonPanelUI());
+        offsetLabel.setUI(new MinimalNeonLabelUI());
+        offsetSlider.setUI(new MinimalNeonSliderUI());
+
         offsetSlider.addChangeListener(e -> {
             offsetTextField.setText(String.valueOf(offsetSlider.getScaledValue()));
         });
@@ -186,12 +217,14 @@ public class Controller extends JPanel {
         //Octave Slider
         JPanel octavePanel = new JPanel();
         JLabel octaveLabel = new JLabel("Octave: ");
-        JSlider octaveSlider = new JSlider(1, 8, 1);
+        DoubleJSlider octaveSlider = new DoubleJSlider(1, 8, 1, 1);
         JLabel octaveSliderValueLabel = new JLabel(String.valueOf(octaveSlider.getValue()));
 
-        octaveSlider.setPaintTicks(true);
-        octaveSlider.setPaintTrack(false);
-        octaveSlider.setMajorTickSpacing(1);
+        octavePanel.setUI(new MinimalNeonPanelUI());
+        octaveLabel.setUI(new MinimalNeonLabelUI());
+        octaveSlider.setUI(new MinimalNeonSliderUI());
+        octaveSliderValueLabel.setUI(new MinimalNeonLabelUI());
+
         octaveSlider.setSnapToTicks(true);
 
         octaveSlider.addChangeListener(e -> {
@@ -204,7 +237,8 @@ public class Controller extends JPanel {
         add(octavePanel);
 
         //Generator Button
-        JButton generatorButton = new JButton("Generate");
+        BasicJButton generatorButton = new BasicJButton("Generate");
+        generatorButton.setUI(new MinimalNeonButtonUI());
         generatorButton.addActionListener(e -> {
             String seedString = seedTextField.getText();
             if (!seedString.matches(INTEGER_REGEX)) {
