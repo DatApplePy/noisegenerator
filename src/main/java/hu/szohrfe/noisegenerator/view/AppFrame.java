@@ -2,11 +2,9 @@ package hu.szohrfe.noisegenerator.view;
 
 import hu.szohrfe.noisegenerator.controller.Controller;
 import hu.szohrfe.noisegenerator.model.Model;
-import hu.szohrfe.noisegenerator.model.PerlinNoise;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
