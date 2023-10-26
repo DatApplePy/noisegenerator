@@ -1,4 +1,4 @@
-package hu.szohrfe.noisegenerator.controller;
+package hu.szohrfe.noisegenerator.controller.components;
 
 import javax.swing.*;
 
