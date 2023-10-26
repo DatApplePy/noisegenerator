@@ -8,7 +8,6 @@ import lombok.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Getter
@@ -87,7 +86,9 @@ public class Model extends Observable {
     }
 
     public void setSeed(long seed) {
-
+        if (seed != perlin.getSeed()) {
+            perlin = new PerlinNoise(seed);
+        }
     }
 
     public void update() {
