@@ -4,11 +4,14 @@ import hu.szohrfe.noisegenerator.controller.components.BasicJButton;
 import hu.szohrfe.noisegenerator.controller.components.DoubleJSlider;
 import hu.szohrfe.noisegenerator.model.Model;
 import hu.szohrfe.noisegenerator.styles.*;
+import hu.szohrfe.noisegenerator.util.ColorPalette;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
 public class Controller extends JPanel {
@@ -28,7 +31,22 @@ public class Controller extends JPanel {
 
     private void controllerInit() {
         setPreferredSize(new Dimension(INIT_WIDTH, INIT_HEIGHT));
-        setUI(new MinimalNeonPanelUI());
+        setUI(new MinimalNeonPanelUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                super.paint(g, c);
+                Graphics2D g2d = (Graphics2D) g;
+                Path2D primaryBand = new Path2D.Double();
+                primaryBand.moveTo(0, 500);
+                primaryBand.lineTo(500, 1000);
+                primaryBand.lineTo(250, 1000);
+                primaryBand.lineTo(0, 750);
+                primaryBand.closePath();
+                Area area = new Area(primaryBand);
+                g2d.setColor(ColorPalette.PINKISH_RED);
+                g2d.fill(area);
+            }
+        });
 
         //Seed Field
         JPanel seedPanel = new JPanel();
@@ -46,12 +64,15 @@ public class Controller extends JPanel {
         //Image size
         JPanel imageSizePanel = new JPanel();
         JLabel imageSizeLabel = new JLabel("Image size: ");
-        JTextField imageWidthTextField = new JTextField("512", 10);
+        JTextField imageWidthTextField = new JTextField("512", 5);
         JLabel filler = new JLabel("x");
-        JTextField imageHeightTextField = new JTextField("512", 10);
+        JTextField imageHeightTextField = new JTextField("512", 5);
 
         imageSizePanel.setUI(new MinimalNeonPanelUI());
         imageSizeLabel.setUI(new MinimalNeonLabelUI());
+        filler.setUI(new MinimalNeonLabelUI());
+        imageWidthTextField.setUI(new MinimalNeonTextFieldUI());
+        imageHeightTextField.setUI(new MinimalNeonTextFieldUI());
 
         imageSizePanel.add(imageSizeLabel);
         imageSizePanel.add(imageWidthTextField);
@@ -69,6 +90,7 @@ public class Controller extends JPanel {
         freqPanel.setUI(new MinimalNeonPanelUI());
         freqLabel.setUI(new MinimalNeonLabelUI());
         freqSlider.setUI(new MinimalNeonSliderUI());
+        freqTextField.setUI(new MinimalNeonTextFieldUI());
 
         freqSlider.addChangeListener(e -> {
             freqTextField.setText(String.valueOf(freqSlider.getScaledValue()));
@@ -100,6 +122,7 @@ public class Controller extends JPanel {
         ampPanel.setUI(new MinimalNeonPanelUI());
         ampLabel.setUI(new MinimalNeonLabelUI());
         ampSlider.setUI(new MinimalNeonSliderUI());
+        ampTextField.setUI(new MinimalNeonTextFieldUI());
 
         ampSlider.addChangeListener(e -> {
             ampTextField.setText(String.valueOf(ampSlider.getScaledValue()));
@@ -131,6 +154,7 @@ public class Controller extends JPanel {
         thresholdMinPanel.setUI(new MinimalNeonPanelUI());
         thresholdMinLabel.setUI(new MinimalNeonLabelUI());
         thresholdMinSlider.setUI(new MinimalNeonSliderUI());
+        thresholdMinTextField.setUI(new MinimalNeonTextFieldUI());
 
         thresholdMinSlider.addChangeListener(e -> {
             thresholdMinTextField.setText(String.valueOf(thresholdMinSlider.getScaledValue()));
@@ -162,6 +186,7 @@ public class Controller extends JPanel {
         thresholdMaxPanel.setUI(new MinimalNeonPanelUI());
         thresholdMaxLabel.setUI(new MinimalNeonLabelUI());
         thresholdMaxSlider.setUI(new MinimalNeonSliderUI());
+        thresholdMaxTextField.setUI(new MinimalNeonTextFieldUI());
 
         thresholdMaxSlider.addChangeListener(e -> {
             thresholdMaxTextField.setText(String.valueOf(thresholdMaxSlider.getScaledValue()));
@@ -193,6 +218,7 @@ public class Controller extends JPanel {
         offsetPanel.setUI(new MinimalNeonPanelUI());
         offsetLabel.setUI(new MinimalNeonLabelUI());
         offsetSlider.setUI(new MinimalNeonSliderUI());
+        offsetTextField.setUI(new MinimalNeonTextFieldUI());
 
         offsetSlider.addChangeListener(e -> {
             offsetTextField.setText(String.valueOf(offsetSlider.getScaledValue()));
